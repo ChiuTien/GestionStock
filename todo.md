@@ -7,14 +7,14 @@
         * type [x]
         * etat_stocks [x]
       2. Views(facultatif)
-2. Acces Donnee(Data Access)
+2. Acces Donnee(Data Access) [x]
    1. Entite/Models [x]
        * type [x]
        * mouvements_stocks [x]
        * etat_stocks [x]
        * produit(object) [x]
-   2. Repositories
-       * Dao 
+   2. Repositories [x]
+       * Dao [x] 
 3. Metier
    1. Services
       1. Un calcule de l'etat_stocks
