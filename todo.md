@@ -1,12 +1,11 @@
 # Gestion de stock
 1. Persistence
-   1. Base (Postgres)
-      1. Schemas
-        * produits (generaliser) => Fifo, Lifo ou CUMP
-        * mouvements_stocks
-        * type
-        * etats_stocks
-      2. Views
+   1. Base (Postgres) [x]
+      1. Schemas[x]
+        * produits (generaliser) => Fifo, Lifo ou CUMP [x]
+        * mouvements_stock [x]
+        * type [x]
+      2. Views(facultatif)
 2. Acces Donnee(Data Access)
    1. Entite/Models
        * type
