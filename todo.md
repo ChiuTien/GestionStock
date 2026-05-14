@@ -8,7 +8,7 @@
       2. Views(facultatif)
 2. Acces Donnee(Data Access)
    1. Entite/Models
-       * type
+       * type [x]
        * mouvements_stocks
        * etat_stokcks
        * produits(object) 
