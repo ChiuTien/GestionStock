@@ -10,7 +10,7 @@
 2. Acces Donnee(Data Access)
    1. Entite/Models
        * type [x]
-       * mouvements_stocks
+       * mouvements_stocks [x]
        * etat_stocks
        * produit(object) [x]
    2. Repositories
