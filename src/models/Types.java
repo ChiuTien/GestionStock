@@ -1,13 +1,13 @@
 package models;
 
-public class Type {
+public class Types {
     //Attributs
     private int id;
     private String libeller;
 
     //Constructeur
-    public Type() {}
-    public Type(int id, String libeller) {
+    public Types() {}
+    public Types(int id, String libeller) {
         this.id = id;
         this.libeller = libeller;
     }

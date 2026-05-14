@@ -11,7 +11,7 @@
        * type [x]
        * mouvements_stocks
        * etat_stokcks
-       * produits(object) 
+       * produit(object) 
    2. Repositories
        * repositoryGeneraliser 
 3. Metier
