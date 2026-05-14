@@ -1,5 +1,6 @@
 package models;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Mouvements_stock {
@@ -8,14 +9,14 @@ public class Mouvements_stock {
     private int produit_id;
     private LocalDate date_mouvement;
     private double quantite;
-    private double prix_unitaire;
+    private BigDecimal prix_unitaire;
     private int type_id;
     private int source;
 
     //Constructeur
     public Mouvements_stock() {}
     public Mouvements_stock(int id,int produit_id, LocalDate date_mouvement, double quantite,
-    double prix_unitaire, int type, int soucre) {
+    BigDecimal prix_unitaire, int type, int soucre) {
         this.id = id;
         this.produit_id = produit_id;
         this.date_mouvement = date_mouvement;
@@ -38,7 +39,7 @@ public class Mouvements_stock {
     public void setQuantite(double quantite) {
         this.quantite = quantite;
     }
-    public void setPrix_unitaire(double prix_unitaire) {
+    public void setPrix_unitaire(BigDecimal prix_unitaire) {
         this.prix_unitaire = prix_unitaire;
     }
     public void setType_id(int type_id) {
@@ -61,7 +62,7 @@ public class Mouvements_stock {
     public double getQuantite() {
         return quantite;
     }
-    public double getPrix_unitaire() {
+    public BigDecimal getPrix_unitaire() {
         return prix_unitaire;
     }
     public int getType_id() {
