@@ -10,17 +10,19 @@ public class Mouvements_stock {
     private double quantite;
     private double prix_unitaire;
     private int type_id;
+    private int source;
 
     //Constructeur
     public Mouvements_stock() {}
     public Mouvements_stock(int id,int produit_id, LocalDate date_mouvement, double quantite,
-    double prix_unitaire, int type) {
+    double prix_unitaire, int type, int soucre) {
         this.id = id;
         this.produit_id = produit_id;
         this.date_mouvement = date_mouvement;
         this.quantite = quantite;
         this.prix_unitaire = prix_unitaire;
         this.type_id = type;
+        this.source = soucre;
     }
 
     //Setters
@@ -42,6 +44,9 @@ public class Mouvements_stock {
     public void setType_id(int type_id) {
         this.type_id = type_id;
     }
+    public void setSource(int soucre) {
+        this.source = soucre;
+    }
 
     //Getters
     public int getId() {
@@ -61,5 +66,8 @@ public class Mouvements_stock {
     }
     public int getType_id() {
         return type_id;
+    }
+    public int getSource() {
+        return this.source;
     }
 } 
