@@ -22,3 +22,12 @@ create table mouvements_stock(
     Foreign Key (produit_id) REFERENCES produits(id) on delete CASCADE,
     Foreign Key (type_id) REFERENCES types(id) on delete CASCADE
 );
+create table etats_stock(
+    id int primary key generated always as IDENTITY,
+    produit_id int not NULL check(produit_id > 0),
+    date_etat date not NULL,
+    stock NUMERIC(10,2) not NULL check(stock >= 0),
+    valeur_stock NUMERIC(10,2) not null check(valeur_stock >= 0),
+    constraint fk_etat
+    Foreign Key (produit_id) REFERENCES produits(id)
+);

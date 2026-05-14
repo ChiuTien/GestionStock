@@ -5,13 +5,14 @@
         * produits (generaliser) => Fifo, Lifo ou CUMP [x]
         * mouvements_stock [x]
         * type [x]
+        * etat_stocks [x]
       2. Views(facultatif)
 2. Acces Donnee(Data Access)
    1. Entite/Models
        * type [x]
        * mouvements_stocks
-       * etat_stokcks
-       * produit(object) 
+       * etat_stocks
+       * produit(object) [x]
    2. Repositories
        * repositoryGeneraliser 
 3. Metier
