@@ -8,10 +8,10 @@
         * etat_stocks [x]
       2. Views(facultatif)
 2. Acces Donnee(Data Access)
-   1. Entite/Models
+   1. Entite/Models [x]
        * type [x]
        * mouvements_stocks [x]
-       * etat_stocks
+       * etat_stocks [x]
        * produit(object) [x]
    2. Repositories
        * repositoryGeneraliser 
