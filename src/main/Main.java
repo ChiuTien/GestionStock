@@ -1,17 +1,12 @@
 package main;
 
-import java.sql.Connection;
-
-import database.connection.DatabaseConnexion;
+import models.Mouvements_stock;
+import repositories.Dao;
 
 public class Main {
     public static void main(String[] args) throws Exception{
-        try {
-            Connection cn = DatabaseConnexion.getConnection();
-            System.out.println("Connexion reussi");
-            cn.close();
-        } catch (Exception e) {
-            throw e;
-        }
+        Dao dao = new Dao();
+        Mouvements_stock mvn = new Mouvements_stock();
+        //dao.update(mvn);
     }
 }

@@ -14,7 +14,7 @@
        * etat_stocks [x]
        * produit(object) [x]
    2. Repositories
-       * repositoryGeneraliser 
+       * Dao 
 3. Metier
    1. Services
       1. Un calcule de l'etat_stocks

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 public class Mouvements_stock {
     //Attributs
     private int id;
+    private int produit_id;
     private LocalDate date_mouvement;
     private double quantite;
     private double prix_unitaire;
@@ -12,9 +13,10 @@ public class Mouvements_stock {
 
     //Constructeur
     public Mouvements_stock() {}
-    public Mouvements_stock(int id, LocalDate date_mouvement, double quantite,
+    public Mouvements_stock(int id,int produit_id, LocalDate date_mouvement, double quantite,
     double prix_unitaire, int type) {
         this.id = id;
+        this.produit_id = produit_id;
         this.date_mouvement = date_mouvement;
         this.quantite = quantite;
         this.prix_unitaire = prix_unitaire;
@@ -24,6 +26,9 @@ public class Mouvements_stock {
     //Setters
     public void setId(int id) {
         this.id = id;
+    }
+    public void setProduit_id(int id) {
+        this.produit_id = id;
     }
     public void setDate_mouvement(LocalDate date_mouvement) {
         this.date_mouvement = date_mouvement;
@@ -41,6 +46,9 @@ public class Mouvements_stock {
     //Getters
     public int getId() {
         return id;
+    }
+    public int getProduit_id() {
+        return produit_id;
     }
     public LocalDate getDate_mouvement() {
         return date_mouvement;
