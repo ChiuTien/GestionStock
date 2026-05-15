@@ -4,11 +4,11 @@ public class Produits {
     //Attributs
     private int id;    
     private String nom_produit;
-    private String type_id;
+    private int type_id;
 
     //Constructeur
     public Produits() {}
-    public Produits(int id, String nom_produit, String type_id) {
+    public Produits(int id, String nom_produit, int type_id) {
         this.id = id;
         this.nom_produit = nom_produit;
         this.type_id = type_id;
@@ -21,7 +21,7 @@ public class Produits {
     public void setNom_produit(String nom_produit) {
         this.nom_produit = nom_produit;
     }
-    public void setType_id(String type_id) {
+    public void setType_id(int type_id) {
         this.type_id = type_id;
     }
 
@@ -32,7 +32,7 @@ public class Produits {
     public String getNom_produit() {
         return nom_produit;
     }
-    public String getType_id() {
+    public int getType_id() {
         return type_id;
     }    
 }

@@ -4,11 +4,51 @@ import models.LotStock;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CUMPService {
 
-    public BigDecimal calculerPrixMoyen(List<LotStock> lots) {
+    public List<LotStock> appliquer(
+            List<LotStock> lots,
+            int sortie
+    ) {
+
+        int totalQte = 0;
+
+        for (LotStock lot : lots) {
+            totalQte += lot.getQuantite();
+        }
+
+        if (sortie > totalQte) {
+            throw new IllegalArgumentException(
+                    "Stock insuffisant"
+            );
+        }
+
+        BigDecimal prixMoyen =
+                calculerPrixMoyen(lots);
+
+        int reste = totalQte - sortie;
+
+        List<LotStock> result = new ArrayList<>();
+
+        if (reste > 0) {
+
+            result.add(
+                    new LotStock(
+                            reste,
+                            prixMoyen
+                    )
+            );
+        }
+
+        return result;
+    }
+
+    public BigDecimal calculerPrixMoyen(
+            List<LotStock> lots
+    ) {
 
         BigDecimal totalValeur = BigDecimal.ZERO;
         int totalQte = 0;
@@ -17,10 +57,10 @@ public class CUMPService {
 
             BigDecimal valeur =
                     lot.getPrix_unitaire()
-                            .multiply(
-                                    BigDecimal.valueOf(
-                                            lot.getQuantite()
-                                    )
+                        .multiply(
+                                BigDecimal.valueOf(
+                                    lot.getQuantite()
+                                )
                             );
 
             totalValeur = totalValeur.add(valeur);
@@ -28,7 +68,6 @@ public class CUMPService {
             totalQte += lot.getQuantite();
         }
 
-        // Evite division par zéro
         if (totalQte == 0) {
             return BigDecimal.ZERO;
         }
