@@ -1,7 +1,5 @@
 package main;
 
-import models.Mouvements_stock;
-import repositories.Dao;
 import ui.frames.MainFrame;
 
 public class Main {
