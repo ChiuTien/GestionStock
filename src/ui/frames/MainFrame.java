@@ -1,8 +1,12 @@
 package ui.frames;
 
 import javax.swing.*;
+
+import models.Produits;
+
 import java.awt.*;
 
+import ui.generic.GenericFormPanel;
 import ui.panels.HeaderPanel;
 import ui.panels.ProduitPanel;
 import ui.panels.StockPanel;
@@ -29,6 +33,7 @@ public class MainFrame extends JFrame {
 
         contentPanel.add(new ProduitPanel(), "produit");
         contentPanel.add(new StockPanel(), "stock");
+        contentPanel.add(new GenericFormPanel<>(Produits.class), "crud");
 
         add(contentPanel, BorderLayout.CENTER);
     }

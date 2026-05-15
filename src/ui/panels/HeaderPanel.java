@@ -13,11 +13,14 @@ public class HeaderPanel extends JPanel {
 
         JButton btnProduit = new JButton("Produits");
         JButton btnStock = new JButton("Stock");
+        JButton btnCrud = new JButton("crud");
 
         btnProduit.addActionListener(e -> frame.showPanel("produit"));
         btnStock.addActionListener(e -> frame.showPanel("stock"));
+        btnCrud.addActionListener(e -> frame.showPanel("crud"));        
 
         add(btnProduit);
         add(btnStock);
+        add(btnCrud);
     }
 }
