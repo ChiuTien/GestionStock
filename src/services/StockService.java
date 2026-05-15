@@ -3,7 +3,9 @@ package services;
 import models.LotStock;
 import models.Mouvements_stock;
 import models.Produits;
+import models.StockDetail;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class StockService {
@@ -14,29 +16,70 @@ public class StockService {
     private LIFOService lifo = new LIFOService();
     private CUMPService cump = new CUMPService();
 
-    public List<LotStock> getStock(
+    public StockDetail getStock(
             Produits produit,
             List<Mouvements_stock> mouvements,
             int sortie
     ) throws Exception {
 
-        List<LotStock> lots = factory.buildLots(mouvements);
+        // Construction des lots depuis les mouvements
+        List<LotStock> lots =
+                factory.buildLots(mouvements);
 
-        int type = produit.getType_id();
+        // Application de la méthode
+        List<LotStock> result;
 
-        switch (type) {
+        switch (produit.getType_id()) {
 
             case 1:
-                return fifo.appliquer(lots, sortie);
+                result = fifo.appliquer(lots, sortie);
+                break;
 
             case 2:
-                return lifo.appliquer(lots, sortie);
+                result = lifo.appliquer(lots, sortie);
+                break;
 
             case 3:
-                return cump.appliquer(lots, sortie);
+                result = cump.appliquer(lots, sortie);
+                break;
 
             default:
-                throw new Exception("Type de valorisation inconnu");
+                throw new Exception(
+                        "Type de valorisation inconnu"
+                );
         }
+
+        // Calcul quantité + valeur totale
+        int totalQte = 0;
+
+        BigDecimal totalValeur =
+                BigDecimal.ZERO;
+
+        for (LotStock lot : result) {
+
+            totalQte += lot.getQuantite();
+
+            BigDecimal valeurLot =
+                    lot.getPrix_unitaire()
+                            .multiply(
+                                    BigDecimal.valueOf(
+                                            lot.getQuantite()
+                                    )
+                            );
+
+            totalValeur =
+                    totalValeur.add(valeurLot);
+        }
+
+        // Construction résultat final
+        StockDetail detail =
+                new StockDetail();
+
+        detail.setProduit(produit.getNom_produit());
+        detail.setLotsRestants(result);
+        detail.setQuantiteTotale(totalQte);
+        detail.setValeurTotale(totalValeur);
+
+        return detail;
     }
 }
