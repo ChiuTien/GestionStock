@@ -16,11 +16,8 @@ public class StockService {
     private LIFOService lifo = new LIFOService();
     private CUMPService cump = new CUMPService();
 
-    public StockDetail getStock(
-            Produits produit,
-            List<Mouvements_stock> mouvements,
-            int sortie
-    ) throws Exception {
+    public StockDetail getStock( Produits produit,
+            List<Mouvements_stock> mouvements, int sortie ) throws Exception {
 
         // Construction des lots depuis les mouvements
         List<LotStock> lots =

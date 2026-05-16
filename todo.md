@@ -19,9 +19,9 @@
    1. Services
       1. Un calcule de l'etat_stocks
       2. Un detail pour les sorties 
-      3. Calcule du Fifo
-      4. Calcule du Lifo
-      5. Calcule du CUMP
+      3. Calcule du Fifo [x]
+      4. Calcule du Lifo [x]
+      5. Calcule du CUMP [x]
    2. Regles
    3. Validation
 4. Presentation

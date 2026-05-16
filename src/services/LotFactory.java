@@ -16,6 +16,7 @@ public class LotFactory {
         for (Mouvements_stock m : mouvements) {
             if(m.getType_id() == 1) {
                 lots.add(new LotStock(
+                    m.getId(),
                     m.getQuantite(),
                     m.getPrix_unitaire()
                 ));
