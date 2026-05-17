@@ -30,8 +30,11 @@ public class Dao {
             return rs.getString(column);
         } else if (type == java.math.BigDecimal.class) {
             return rs.getBigDecimal(column);
-        } else if (type == java.sql.Date.class) {
-            return rs.getDate(column);
+        } else if (type == java.time.LocalDate.class) {
+            java.sql.Date sqlDate = rs.getDate(column);
+            if(sqlDate != null) {
+                return sqlDate.toLocalDate();
+            }
         }
         return rs.getObject(column);
     }
