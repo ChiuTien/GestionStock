@@ -14,6 +14,47 @@ public class Dao {
     //Constructeur
     public Dao() {}
 
+    //Nom de table
+    private String getNameTable(Class<?> type) {
+        String table = type.getSimpleName();
+        return Character.toLowerCase(table.charAt(0)) + table.substring(1);
+    }
+
+    //Reglage du type (lecture/ecriture)
+    private Object getResultValue(ResultSet rs, String column, Class<?> type) throws Exception {
+        if (type == int.class || type == Integer.class) {
+            return rs.getInt(column);
+        } else if (type == double.class || type == Double.class) {
+            return rs.getDouble(column);
+        } else if (type == String.class) {
+            return rs.getString(column);
+        } else if (type == java.math.BigDecimal.class) {
+            return rs.getBigDecimal(column);
+        } else if (type == java.sql.Date.class) {
+            return rs.getDate(column);
+        }
+        return rs.getObject(column);
+    }
+    private void setStatementValue(PreparedStatement ps, int index, Object value, Class<?> type) throws Exception {
+        if(value == null) {
+            ps.setObject(index, null);
+            return;
+        }
+        if (type == int.class || type == Integer.class) {
+            ps.setInt(index, (Integer) value);
+        } else if (type == double.class || type == Double.class) {
+            ps.setDouble(index, (Double) value);
+        } else if (type == String.class) {
+            ps.setString(index, (String) value);
+        } else if (type == java.math.BigDecimal.class) {
+            ps.setBigDecimal(index, (java.math.BigDecimal) value);
+        } else if (type == java.sql.Date.class) {
+            ps.setDate(index, (java.sql.Date) value);
+        } else {
+            ps.setObject(index, value);
+        }
+}
+
     //Save
     public void save(Object obj) throws Exception {
         Connection co = null;
@@ -28,8 +69,7 @@ public class Dao {
     }
     public void save(Object obj,Connection co) throws Exception {
         Class<?> clazz = obj.getClass();
-        String table = clazz.getSimpleName();
-        table = Character.toLowerCase(table.charAt(0)) + table.substring(1);
+        String table = getNameTable(clazz);
 
         Field[] fields = clazz.getDeclaredFields();
         
@@ -72,7 +112,8 @@ public class Dao {
                         +f.getName().substring(1);
 
                 Method getter = clazz.getMethod(getterName);
-                ps.setObject(i+1, getter.invoke(obj));
+                Object value = getter.invoke(obj);
+                setStatementValue(ps, i+1, value, f.getType());
             }
             ps.executeUpdate();
         } catch (Exception e) {
@@ -96,8 +137,7 @@ public class Dao {
     }
     public void delete(Object obj,Connection co) throws Exception {
         Class<?> clazz = obj.getClass();
-        String table = clazz.getSimpleName();
-        table = Character.toLowerCase(table.charAt(0)) + table.substring(1);
+        String table = getNameTable(clazz);
 
         Field idField = clazz.getDeclaredField("id");
 
@@ -135,8 +175,7 @@ public class Dao {
     }
     public void update(Object obj, Connection co) throws Exception {
         Class<?> clazz = obj.getClass();
-        String table = clazz.getSimpleName();
-        table = Character.toLowerCase(table.charAt(0)) + table.substring(1);
+        String table = getNameTable(clazz);
 
         Field[] fields = clazz.getDeclaredFields();
 
@@ -175,7 +214,8 @@ public class Dao {
                     +f.getName().substring(1);
 
                 Method getter = clazz.getMethod(getterName);
-                ps.setObject(index++, getter.invoke(obj));
+                Object value = getter.invoke(obj);
+                setStatementValue(ps, index++, value, f.getType());
             }
 
             String idGetterName = 
@@ -209,8 +249,7 @@ public class Dao {
         return list;
     }
     public <T> List<T> getAll(Class<T> clazz,Connection co) throws Exception {
-        String table = clazz.getSimpleName();
-        table = Character.toLowerCase(table.charAt(0)) + table.substring(1);
+        String table = getNameTable(clazz);
 
         String sql = "SELECT * FROM "+table;
 
@@ -232,7 +271,7 @@ public class Dao {
 
                     Method setter = clazz.getMethod(setterName,f.getType());
 
-                    Object value = rs.getObject(f.getName());
+                    Object value = getResultValue(rs, f.getName(), f.getType());
 
                     setter.invoke(obj, value);
                 }
@@ -262,8 +301,7 @@ public class Dao {
         return obj;
     }
     public <T> T getById(Class<T> clazz, Object id, Connection co) throws Exception {
-        String table = clazz.getSimpleName();
-        table = Character.toLowerCase(table.charAt(0)) + table.substring(1);
+        String table = getNameTable(clazz);
 
         String sql = "SELECT * FROM "+table+" WHERE id = ?";
 
@@ -283,7 +321,7 @@ public class Dao {
 
                     Method setter = clazz.getMethod(setterName, f.getType());
 
-                    Object value = rs.getObject(f.getName());
+                    Object value = getResultValue(rs, f.getName(), f.getType());
 
                     setter.invoke(obj, value);
                 }

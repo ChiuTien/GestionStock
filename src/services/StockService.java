@@ -27,19 +27,15 @@ public class StockService {
         List<LotStock> result;
 
         switch (produit.getType_id()) {
-
             case 1:
                 result = fifo.appliquer(lots, sortie);
                 break;
-
             case 2:
                 result = lifo.appliquer(lots, sortie);
                 break;
-
             case 3:
                 result = cump.appliquer(lots, sortie);
                 break;
-
             default:
                 throw new Exception(
                         "Type de valorisation inconnu"
@@ -51,18 +47,13 @@ public class StockService {
 
         BigDecimal totalValeur =
                 BigDecimal.ZERO;
-
         for (LotStock lot : result) {
-
             totalQte += lot.getQuantite();
-
-            BigDecimal valeurLot =
-                    lot.getPrix_unitaire()
-                            .multiply(
+            BigDecimal valeurLot = lot.getPrix_unitaire()
+                                .multiply(
                                     BigDecimal.valueOf(
-                                            lot.getQuantite()
-                                    )
-                            );
+                                        lot.getQuantite()
+                                    ));
 
             totalValeur =
                     totalValeur.add(valeurLot);

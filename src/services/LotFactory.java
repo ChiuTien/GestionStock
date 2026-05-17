@@ -14,7 +14,7 @@ public class LotFactory {
     public List<LotStock> buildLots(List<Mouvements_stock> mouvements) {
         List<LotStock> lots = new ArrayList<>();
         for (Mouvements_stock m : mouvements) {
-            if(m.getType_id() == 1) {
+            if(m.getType_id() == 4) {
                 lots.add(new LotStock(
                     m.getId(),
                     m.getQuantite(),
