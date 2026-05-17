@@ -51,8 +51,11 @@ public class Dao {
             ps.setString(index, (String) value);
         } else if (type == java.math.BigDecimal.class) {
             ps.setBigDecimal(index, (java.math.BigDecimal) value);
-        } else if (type == java.sql.Date.class) {
-            ps.setDate(index, (java.sql.Date) value);
+        } else if (type == java.time.LocalDate.class) {
+            ps.setDate(
+                index,
+                java.sql.Date.valueOf((java.time.LocalDate)value)
+            );
         } else {
             ps.setObject(index, value);
         }
