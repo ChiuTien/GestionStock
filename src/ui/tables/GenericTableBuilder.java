@@ -28,7 +28,6 @@ public class GenericTableBuilder {
                 rows[i][j] = method.invoke(obj);
             }
         }
-
         return new JTable(rows, columns);
     }
 }

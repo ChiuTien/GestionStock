@@ -154,11 +154,9 @@ public class UpdateGenericPanel<T> extends JPanel {
         if (type == int.class || type == Integer.class) {
             return Integer.parseInt(value);
         }
-
         if (type == double.class || type == Double.class) {
             return Double.parseDouble(value);
         }
-
         if (type == java.math.BigDecimal.class) {
             return new java.math.BigDecimal(value);
         }

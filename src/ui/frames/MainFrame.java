@@ -9,7 +9,7 @@ public class MainFrame extends JFrame {
 
     private JPanel contentPanel;
 
-    public MainFrame() {
+    public MainFrame() throws Exception {
         setTitle("Gestion Stock");
         setSize(1000, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);

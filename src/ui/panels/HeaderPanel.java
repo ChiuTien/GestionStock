@@ -45,7 +45,7 @@ public class HeaderPanel extends JPanel {
     // ETAT STOCK
     private JMenuItem etatStock = new JMenuItem("Etat du stock");
 
-    public HeaderPanel(MainFrame frame) {
+    public HeaderPanel(MainFrame frame) throws Exception {
         this.frame = frame;
 
         setLayout(new BorderLayout());
@@ -88,7 +88,7 @@ public class HeaderPanel extends JPanel {
         bar.add(etatMenu);
     }
 
-    private void addListeners() {
+    private void addListeners() throws Exception {
         // PRODUITS
         produitInsert.addActionListener(e -> {
             frame.setContentPanel(
@@ -157,10 +157,13 @@ public class HeaderPanel extends JPanel {
 
         // ETAT STOCK
         etatStock.addActionListener(e -> {
-            frame.setContentPanel(
-                new JPanel()
-                // new EtatStockPanel()
-            );
+            try {
+                frame.setContentPanel(
+                    new StockPanel()
+                );
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
         });
     }
 }
