@@ -5,15 +5,15 @@ import java.util.List;
 
 public class StockDetail {
     //Attributs
-    private String produit;
+    private Produits produit;
     private List<LotStock> lotsRestants;
-    private int quantiteTotale;
+    private double quantiteTotale;
     private BigDecimal valeurTotale;
 
     //Constructeurs
     public StockDetail() {}
-    public StockDetail(String produit,List<LotStock> lotsRestants,
-    int quantiteTotale,BigDecimal valeurTotale) {
+    public StockDetail(Produits produit,List<LotStock> lotsRestants,
+    double quantiteTotale,BigDecimal valeurTotale) {
         this.produit = produit;
         this.lotsRestants = lotsRestants;
         this.quantiteTotale = quantiteTotale;
@@ -21,24 +21,24 @@ public class StockDetail {
     }
 
     //Setters
-    public void setProduit(String produit) {
+    public void setProduit(Produits produit) {
         this.produit = produit;
     }
     public void setLotsRestants(List<LotStock> lotsRestants) {
         this.lotsRestants = lotsRestants;
     }
-    public void setQuantiteTotale(int quantiteTotale) {
+    public void setQuantiteTotale(double quantiteTotale) {
         this.quantiteTotale = quantiteTotale;
-    }
-    public String getProduit() {
-        return produit;
     }
 
     //Getters
+    public Produits getProduit() {
+        return produit;
+    }
     public List<LotStock> getLotsRestants() {
         return lotsRestants;
     }
-    public int getQuantiteTotale() {
+    public double getQuantiteTotale() {
         return quantiteTotale;
     }
     public BigDecimal getValeurTotale() {

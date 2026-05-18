@@ -71,4 +71,18 @@ public class Mouvements_stock {
     public int getSource() {
         return this.source;
     }
+
+    //Methodes utilitaires
+    public boolean isEntree() {
+        if(type_id == 4) {
+            return true;
+        }
+        return false;
+    }
+    public boolean isSortie() {
+        if(type_id == 5) {
+            return true;
+        }
+        return false;
+    }
 } 

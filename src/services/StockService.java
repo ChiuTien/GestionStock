@@ -6,68 +6,85 @@ import models.Produits;
 import models.StockDetail;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class StockService {
 
-    private LotFactory factory = new LotFactory();
+        private MouvementService mouvementService = new MouvementService();
 
-    private FIFOService fifo = new FIFOService();
-    private LIFOService lifo = new LIFOService();
-    private CUMPService cump = new CUMPService();
+        private FIFOService fifo = new FIFOService();
+        private LIFOService lifo = new LIFOService();
+        private CUMPService cump = new CUMPService();
 
-    public StockDetail getStock( Produits produit,
-            List<Mouvements_stock> mouvements, int sortie ) throws Exception {
-
-        // Construction des lots depuis les mouvements
-        List<LotStock> lots =
-                factory.buildLots(mouvements);
-
-        // Application de la méthode
-        List<LotStock> result;
-
-        switch (produit.getType_id()) {
-            case 1:
-                result = fifo.appliquer(lots, sortie);
-                break;
-            case 2:
-                result = lifo.appliquer(lots, sortie);
-                break;
-            case 3:
-                result = cump.appliquer(lots, sortie);
-                break;
-            default:
-                throw new Exception(
-                        "Type de valorisation inconnu"
-                );
+        public List<LotStock> appliquerStrategie(int id, List<LotStock> lots, double quantite) throws Exception {
+                List<LotStock> result = new ArrayList<>();
+                switch (id) {
+                case 1:
+                        result = fifo.appliquer(lots, quantite);
+                        break;
+                case 2:
+                        result = lifo.appliquer(lots, quantite);
+                        break;
+                case 3:
+                        result = cump.appliquer(lots, quantite);
+                        break;
+                default:
+                        throw new Exception(
+                                "Type de valorisation inconnu"
+                        );
+                }
+                return result;
         }
 
-        // Calcul quantité + valeur totale
-        int totalQte = 0;
+        public List<LotStock> getStock(Produits produit, LocalDate date) throws Exception {
+                List<Mouvements_stock> mouvements_stocks = mouvementService.getAll();
+        
+                mouvements_stocks = mouvementService.filterDateAndProduit(mouvements_stocks, date, produit);
 
-        BigDecimal totalValeur =
-                BigDecimal.ZERO;
-        for (LotStock lot : result) {
-            totalQte += lot.getQuantite();
-            BigDecimal valeurLot = lot.getPrix_unitaire()
-                                .multiply(
-                                    BigDecimal.valueOf(
-                                        lot.getQuantite()
-                                    ));
+                //Effectue un tri chronologique
+                mouvements_stocks.sort(Comparator.comparing(Mouvements_stock::getDate_mouvement));
 
-            totalValeur =
-                    totalValeur.add(valeurLot);
+                List<LotStock> lots = new ArrayList<>();
+                for (Mouvements_stock mouvement : mouvements_stocks) {
+                        if(mouvement.isEntree()) {
+                                lots.add(new LotStock(
+                                        mouvement.getId(),
+                                        mouvement.getQuantite(),
+                                        mouvement.getPrix_unitaire()
+                                ));
+                        } else {
+                                lots = appliquerStrategie(
+                                        produit.getType_id(),
+                                        lots,
+                                        mouvement.getQuantite()
+                                );
+                        }
+                }
+                return lots;
         }
 
-        // Construction résultat final
-        StockDetail detail =
-                new StockDetail();
+        public StockDetail getStockDetail(Produits produit, LocalDate date) throws Exception {
+                List<LotStock> lots = getStock(produit, date);
+                double quantiteTotale = 0;
+                BigDecimal totalValeur = BigDecimal.ZERO;
+                for (LotStock lot : lots) {
+                        quantiteTotale += lot.getQuantite();
+                        BigDecimal valeur = lot.getPrix_unitaire()
+                                                .multiply(
+                                                        BigDecimal.valueOf(lot.getQuantite())
+                                                );
+                        totalValeur = totalValeur.add(valeur);
+                }
+                StockDetail detail = new StockDetail();
 
-        detail.setProduit(produit.getNom_produit());
-        detail.setLotsRestants(result);
-        detail.setQuantiteTotale(totalQte);
-        detail.setValeurTotale(totalValeur);
+                detail.setProduit(produit);
+                detail.setLotsRestants(lots);
+                detail.setQuantiteTotale(quantiteTotale);
+                detail.setValeurTotale(totalValeur);
 
-        return detail;
-    }
+                return detail;
+        }
 }

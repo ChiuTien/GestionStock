@@ -11,7 +11,7 @@ public class CUMPService {
 
     public List<LotStock> appliquer(
             List<LotStock> lots,
-            int sortie
+            double sortie
     ) {
 
         int totalQte = 0;
@@ -29,7 +29,7 @@ public class CUMPService {
         BigDecimal prixMoyen =
                 calculerPrixMoyen(lots);
 
-        int reste = totalQte - sortie;
+        double reste = totalQte - sortie;
 
         List<LotStock> result = new ArrayList<>();
 
