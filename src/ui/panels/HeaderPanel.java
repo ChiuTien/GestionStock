@@ -4,6 +4,10 @@ import models.Mouvements_stock;
 import models.Produits;
 import models.Types;
 import ui.frames.MainFrame;
+import ui.generic.DeleteGenericPanel;
+import ui.generic.InsertGenericPanel;
+import ui.generic.ListGenericPanel;
+import ui.generic.UpdateGenericPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,13 +54,12 @@ public class HeaderPanel extends JPanel {
 
         buildMenu();
 
-        addListeners(frame);
+        addListeners();
 
         add(bar, BorderLayout.CENTER);
     }
 
     private void buildMenu() {
-
         // PRODUITS
         produitMenu.add(produitInsert);
         produitMenu.add(produitListe);
@@ -85,7 +88,7 @@ public class HeaderPanel extends JPanel {
         bar.add(etatMenu);
     }
 
-    private void addListeners(MainFrame frame) {
+    private void addListeners() {
         // PRODUITS
         produitInsert.addActionListener(e -> {
             frame.setContentPanel(
@@ -155,7 +158,8 @@ public class HeaderPanel extends JPanel {
         // ETAT STOCK
         etatStock.addActionListener(e -> {
             frame.setContentPanel(
-                new EtatStockPanel()
+                new JPanel()
+                // new EtatStockPanel()
             );
         });
     }
