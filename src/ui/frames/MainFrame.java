@@ -1,45 +1,35 @@
 package ui.frames;
 
-import javax.swing.*;
-
-import models.Produits;
-
-import java.awt.*;
-
-import ui.generic.GenericFormPanel;
 import ui.panels.HeaderPanel;
-import ui.panels.ProduitPanel;
-import ui.panels.StockPanel;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class MainFrame extends JFrame {
 
     private JPanel contentPanel;
 
     public MainFrame() {
-
         setTitle("Gestion Stock");
         setSize(1000, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
         setLayout(new BorderLayout());
 
         // HEADER
         HeaderPanel header = new HeaderPanel(this);
         add(header, BorderLayout.NORTH);
 
-        // CONTENT AREA
-        contentPanel = new JPanel(new CardLayout());
-
-        contentPanel.add(new ProduitPanel(), "produit");
-        contentPanel.add(new StockPanel(), "stock");
-        contentPanel.add(new GenericFormPanel<>(Produits.class), "crud");
-
+        // CONTENT
+        contentPanel = new JPanel(new BorderLayout());
         add(contentPanel, BorderLayout.CENTER);
+        setVisible(true);
     }
 
-    public void showPanel(String name) {
-        CardLayout cl = (CardLayout) contentPanel.getLayout();
-        cl.show(contentPanel, name);
+    public void setContentPanel(JPanel panel) {
+        contentPanel.removeAll();
+        contentPanel.add(panel, BorderLayout.CENTER);
+        contentPanel.revalidate();
+        contentPanel.repaint();
     }
 }

@@ -14,9 +14,7 @@ public class GenericFormPanel<T> extends JPanel {
 
     public GenericFormPanel(Class<T> clazz) {
         this.clazz = clazz;
-
         setLayout(new GridLayout(0, 2, 10, 10));
-
         buildForm();
     }
 
