@@ -117,7 +117,6 @@ public class StockPanel extends JPanel {
         Object[][] rows = new Object[currentStocks.size()][3];
 
         for (int i = 0; i < currentStocks.size(); i++) {
-
             StockDetail s = currentStocks.get(i);
 
             rows[i][0] = s.getProduit().getNom_produit();
