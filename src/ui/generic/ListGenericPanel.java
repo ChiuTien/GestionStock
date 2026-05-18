@@ -1,8 +1,6 @@
 package ui.generic;
 
 import java.awt.BorderLayout;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -11,6 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import controllers.ControllerGeneric;
+import ui.tables.GenericTableBuilder;
 
 public class ListGenericPanel<T> extends JPanel {
 
@@ -28,32 +27,7 @@ public class ListGenericPanel<T> extends JPanel {
                 return;
             }
 
-            Field[] fields = clazz.getDeclaredFields();
-
-            String[] columns = new String[fields.length];
-
-            for (int i = 0; i < fields.length; i++) {
-                columns[i] = fields[i].getName();
-            }
-
-            Object[][] rows = new Object[data.size()][fields.length];
-
-            for (int i = 0; i < data.size(); i++) {
-                T obj = data.get(i);
-
-                for (int j = 0; j < fields.length; j++) {
-
-                    String getterName =
-                            "get" + Character.toUpperCase(fields[j].getName().charAt(0))
-                            + fields[j].getName().substring(1);
-
-                    Method getter = clazz.getMethod(getterName);
-
-                    rows[i][j] = getter.invoke(obj);
-                }
-            }
-
-            JTable table = new JTable(rows, columns);
+            JTable table = GenericTableBuilder.build(data, clazz);
 
             add(new JScrollPane(table), BorderLayout.CENTER);
 

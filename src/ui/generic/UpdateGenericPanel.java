@@ -1,6 +1,7 @@
 package ui.generic;
 
 import controllers.ControllerGeneric;
+import ui.tables.GenericTableBuilder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,33 +33,7 @@ public class UpdateGenericPanel<T> extends JPanel {
                 return;
             }
 
-            Field[] fields = clazz.getDeclaredFields();
-
-            String[] columns = new String[fields.length];
-
-            for (int i = 0; i < fields.length; i++) {
-                columns[i] = fields[i].getName();
-            }
-
-            Object[][] rows = new Object[data.size()][fields.length];
-
-            for (int i = 0; i < data.size(); i++) {
-
-                T obj = data.get(i);
-
-                for (int j = 0; j < fields.length; j++) {
-
-                    String getterName =
-                            "get" + Character.toUpperCase(fields[j].getName().charAt(0))
-                            + fields[j].getName().substring(1);
-
-                    Method getter = clazz.getMethod(getterName);
-
-                    rows[i][j] = getter.invoke(obj);
-                }
-            }
-
-            table = new JTable(rows, columns);
+            table = GenericTableBuilder.build(data, clazz);
 
             scroll = new JScrollPane(table);
 
