@@ -11,19 +11,15 @@ public class ControllerGeneric<T> {
     public void save(T obj) throws Exception {
         dao.save(obj);
     }
-
     public void update(T obj) throws Exception {
         dao.update(obj);
     }
-
     public void delete(T obj) throws Exception {
         dao.delete(obj);
     }
-
     public List<T> getAll(Class<T> clazz) throws Exception {
         return dao.getAll(clazz);
     }
-
     public T getById(Class<T> clazz, Object id) throws Exception {
         return dao.getById(clazz, id);
     }
