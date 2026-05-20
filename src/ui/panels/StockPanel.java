@@ -172,7 +172,7 @@ public class StockPanel extends JPanel {
                 "Date sortie",
                 "Entrée",
                 "Date entrée",
-                "Quantité",
+                "Quantité sortie",
                 "Prix",
                 "Valeur"
         };

@@ -72,7 +72,6 @@ public class CUMPService {
                     new ConsommationLot(
                             sortie.getId(),
                             sortie.getDate_mouvement(),
-                            sortie.getQuantite(),
                             lot.getMouvement_id(),
                             lot.getDateEntree(),
                             pris,
@@ -80,6 +79,7 @@ public class CUMPService {
                     )
             );
         }
+
         return lots;
     }
 }

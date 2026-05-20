@@ -12,7 +12,6 @@ public class ConsommationLot {
     private LocalDate dateEntree;
     
     private double quantite;
-    private double quantiteConsomme;
 
     private BigDecimal prixUnitaire;
     
@@ -20,7 +19,7 @@ public class ConsommationLot {
 
     // Constructeurs
     public ConsommationLot() {}
-    public ConsommationLot(int sortieId, LocalDate dateSortie,double qteC , int entreeId, 
+    public ConsommationLot(int sortieId, LocalDate dateSortie, int entreeId, 
         LocalDate dateEntree, double quantite, BigDecimal prixUnitaire ) {
         this.sortieId = sortieId;
         this.dateSortie = dateSortie;
@@ -28,7 +27,6 @@ public class ConsommationLot {
         this.entreeId = entreeId;
         this.dateEntree = dateEntree;
 
-        this.quantiteConsomme = qteC;
         this.quantite = quantite;
 
         this.prixUnitaire = prixUnitaire;
@@ -60,9 +58,6 @@ public class ConsommationLot {
     public void setValeur(BigDecimal valeur) {
         this.valeur = valeur;
     }
-    public void setQuantiteConsomme(double conso) {
-        this.quantiteConsomme = conso;
-    }
 
     // Getters
     public int getSortieId() {
@@ -85,8 +80,5 @@ public class ConsommationLot {
     }
     public BigDecimal getValeur() {
         return valeur;
-    }
-    public double getQuantiteConsomme() {
-        return this.quantiteConsomme;
     }
 }
