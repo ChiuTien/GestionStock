@@ -36,7 +36,7 @@ public class ConsommationLot {
         );
     }
 
-    // SETTERS
+    // Setters
     public void setSortieId(int sortieId) {
         this.sortieId = sortieId;
     }
@@ -59,7 +59,7 @@ public class ConsommationLot {
         this.valeur = valeur;
     }
 
-    // GETTERS
+    // Getters
     public int getSortieId() {
         return sortieId;
     }
