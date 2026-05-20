@@ -9,46 +9,34 @@ import java.util.List;
 
 public class CUMPService {
 
-    public List<LotStock> appliquer(
-            List<LotStock> lots,
-            double sortie
-    ) {
+    public List<LotStock> appliquer(List<LotStock> lots, double sortie) {
 
         int totalQte = 0;
 
         for (LotStock lot : lots) {
             totalQte += lot.getQuantite();
         }
-
         if (sortie > totalQte) {
             throw new IllegalArgumentException(
                     "Stock insuffisant"
             );
         }
 
-        BigDecimal prixMoyen =
-                calculerPrixMoyen(lots);
+        BigDecimal prixMoyen = calculerPrixMoyen(lots);
 
         double reste = totalQte - sortie;
 
         List<LotStock> result = new ArrayList<>();
 
         if (reste > 0) {
-
-            result.add(
-                    new LotStock(
-                            reste,
-                            prixMoyen
-                    )
+            result.add(new LotStock(reste, prixMoyen)
             );
         }
 
         return result;
     }
 
-    public BigDecimal calculerPrixMoyen(
-            List<LotStock> lots
-    ) {
+    public BigDecimal calculerPrixMoyen(List<LotStock> lots) {
 
         BigDecimal totalValeur = BigDecimal.ZERO;
         int totalQte = 0;
