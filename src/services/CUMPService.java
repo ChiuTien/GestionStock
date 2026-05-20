@@ -1,69 +1,85 @@
 package services;
 
-import models.LotStock;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.List;
+
+import models.ConsommationLot;
+import models.LotStock;
+import models.Mouvements_stock;
 
 public class CUMPService {
 
-    public List<LotStock> appliquer(List<LotStock> lots, double sortie) {
+    // Constructeur
+    public CUMPService() {}
 
-        int totalQte = 0;
+    // Methode
+    public List<LotStock> appliquer(List<LotStock> lots, Mouvements_stock sortie) throws Exception {
+        double stockTotal = 0;
+        BigDecimal valeurTotale = BigDecimal.ZERO;
 
+        // Calcul stock + valeur totale
         for (LotStock lot : lots) {
-            totalQte += lot.getQuantite();
+            stockTotal += lot.getQuantite();
+            valeurTotale = valeurTotale.add(
+                    lot.getPrix_unitaire().multiply(
+                            BigDecimal.valueOf(
+                                lot.getQuantite()
+                            )
+                    )
+            );
         }
-        if (sortie > totalQte) {
-            throw new IllegalArgumentException(
+
+        if (sortie.getQuantite() > stockTotal) {
+            throw new Exception(
                     "Stock insuffisant"
             );
         }
 
-        BigDecimal prixMoyen = calculerPrixMoyen(lots);
-
-        double reste = totalQte - sortie;
-
-        List<LotStock> result = new ArrayList<>();
-
-        if (reste > 0) {
-            result.add(new LotStock(reste, prixMoyen)
-            );
-        }
-
-        return result;
-    }
-
-    public BigDecimal calculerPrixMoyen(List<LotStock> lots) {
-
-        BigDecimal totalValeur = BigDecimal.ZERO;
-        int totalQte = 0;
-
-        for (LotStock lot : lots) {
-
-            BigDecimal valeur =
-                    lot.getPrix_unitaire()
-                        .multiply(
-                                BigDecimal.valueOf(
-                                    lot.getQuantite()
-                                )
-                            );
-
-            totalValeur = totalValeur.add(valeur);
-
-            totalQte += lot.getQuantite();
-        }
-
-        if (totalQte == 0) {
-            return BigDecimal.ZERO;
-        }
-
-        return totalValeur.divide(
-                BigDecimal.valueOf(totalQte),
+        // Prix moyen pondéré
+        BigDecimal prixMoyen = valeurTotale.divide(
+                BigDecimal.valueOf(stockTotal),
                 2,
                 RoundingMode.HALF_UP
         );
+
+        double restant = sortie.getQuantite();
+
+        // Consommation proportionnelle
+        for (LotStock lot : lots) {
+            if (restant <= 0) {
+                break;
+            }
+            if (lot.getQuantite() <= 0) {
+                continue;
+            }
+
+            double pris = 0;
+
+            if (lot.getQuantite() <= restant) {
+                pris = lot.getQuantite();
+                restant -= lot.getQuantite();
+                lot.setQuantite(0);
+            }
+            else {
+                pris = restant;
+                lot.setQuantite(lot.getQuantite() - restant);
+                restant = 0;
+            }
+
+            // Historique consommation
+            lot.getConsommation().add(
+                    new ConsommationLot(
+                            sortie.getId(),
+                            sortie.getDate_mouvement(),
+                            sortie.getQuantite(),
+                            lot.getMouvement_id(),
+                            lot.getDateEntree(),
+                            pris,
+                            prixMoyen
+                    )
+            );
+        }
+        return lots;
     }
 }

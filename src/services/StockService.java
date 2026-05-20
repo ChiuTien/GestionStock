@@ -19,17 +19,17 @@ public class StockService {
         private LIFOService lifo = new LIFOService();
         private CUMPService cump = new CUMPService();
 
-        public List<LotStock> appliquerStrategie(int id, List<LotStock> lots, double quantite) throws Exception {
+        public List<LotStock> appliquerStrategie(int id, List<LotStock> lots, Mouvements_stock mouvement) throws Exception {
                 List<LotStock> result = new ArrayList<>();
                 switch (id) {
                 case 1:
-                        result = fifo.appliquer(lots, quantite);
+                        result = fifo.appliquer(lots, mouvement);
                         break;
                 case 2:
-                        result = lifo.appliquer(lots, quantite);
+                        result = lifo.appliquer(lots, mouvement);
                         break;
                 case 3:
-                        result = cump.appliquer(lots, quantite);
+                        result = cump.appliquer(lots, mouvement);
                         break;
                 default:
                         throw new Exception(
@@ -53,13 +53,14 @@ public class StockService {
                                 lots.add(new LotStock(
                                         mouvement.getId(),
                                         mouvement.getQuantite(),
+                                        mouvement.getDate_mouvement(),
                                         mouvement.getPrix_unitaire()
                                 ));
                         } else {
                                 lots = appliquerStrategie(
                                         produit.getType_id(),
                                         lots,
-                                        mouvement.getQuantite()
+                                        mouvement
                                 );
                         }
                 }
