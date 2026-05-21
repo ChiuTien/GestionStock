@@ -14,68 +14,112 @@ public class CUMPService {
     public CUMPService() {}
 
     // Methode
-    public List<LotStock> appliquer(List<LotStock> lots, Mouvements_stock sortie) throws Exception {
-        double stockTotal = 0;
+    public List<LotStock> appliquer(
+            List<LotStock> lots,
+            Mouvements_stock sortie
+    ) throws Exception {
+
+        // Vérifications
+        if (lots == null || lots.isEmpty()) {
+            throw new Exception("Aucun lot disponible");
+        }
+
+        if (sortie == null) {
+            throw new Exception("Sortie nulle");
+        }
+
+        // Calcul quantité + valeur totale
+        BigDecimal stockTotal = BigDecimal.ZERO;
         BigDecimal valeurTotale = BigDecimal.ZERO;
 
-        // Calcul stock + valeur totale
         for (LotStock lot : lots) {
-            stockTotal += lot.getQuantite();
+
+            BigDecimal qte = BigDecimal.valueOf(
+                    lot.getQuantite()
+            );
+
+            stockTotal = stockTotal.add(qte);
+
             valeurTotale = valeurTotale.add(
-                    lot.getPrix_unitaire().multiply(
-                            BigDecimal.valueOf(
-                                lot.getQuantite()
-                            )
-                    )
+                    lot.getPrix_unitaire().multiply(qte)
             );
         }
 
-        if (sortie.getQuantite() > stockTotal) {
+        // Vérification stock
+        BigDecimal qteSortie = BigDecimal.valueOf(
+                sortie.getQuantite()
+        );
+
+        if (qteSortie.compareTo(stockTotal) > 0) {
             throw new Exception(
                     "Stock insuffisant"
             );
         }
 
-        // Prix moyen pondéré
+        // Calcul du prix moyen pondéré
         BigDecimal prixMoyen = valeurTotale.divide(
-                BigDecimal.valueOf(stockTotal),
-                2,
+                stockTotal,
+                6,
                 RoundingMode.HALF_UP
         );
 
-        double restant = sortie.getQuantite();
+        // Quantité restante à sortir
+        BigDecimal restant = qteSortie;
 
-        // Consommation proportionnelle
+        // Consommation
         for (LotStock lot : lots) {
-            if (restant <= 0) {
+
+            if (restant.compareTo(BigDecimal.ZERO) <= 0) {
                 break;
             }
+
             if (lot.getQuantite() <= 0) {
                 continue;
             }
 
-            double pris = 0;
+            BigDecimal qteLot = BigDecimal.valueOf(
+                    lot.getQuantite()
+            );
 
-            if (lot.getQuantite() <= restant) {
-                pris = lot.getQuantite();
-                restant -= lot.getQuantite();
+            BigDecimal pris;
+
+            // On vide complètement le lot
+            if (qteLot.compareTo(restant) <= 0) {
+
+                pris = qteLot;
+
                 lot.setQuantite(0);
-            }
-            else {
-                pris = restant;
-                lot.setQuantite(lot.getQuantite() - restant);
-                restant = 0;
+
             }
 
-            // Historique consommation
+            // On prend partiellement
+            else {
+
+                pris = restant;
+
+                lot.setQuantite(
+                        qteLot.subtract(restant).doubleValue()
+                );
+            }
+
+            // Mise à jour restant
+            restant = restant.subtract(pris);
+
+            // Historique
             lot.getConsommation().add(
                     new ConsommationLot(
                             sortie.getId(),
                             sortie.getDate_mouvement(),
+
                             lot.getMouvement_id(),
                             lot.getDateEntree(),
-                            pris,
-                            prixMoyen
+
+                            pris.doubleValue(),
+
+                            prixMoyen.setScale(
+                                    2,
+                                    RoundingMode.HALF_UP
+                            )
                     )
             );
         }
